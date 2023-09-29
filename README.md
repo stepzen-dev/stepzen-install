@@ -16,12 +16,22 @@ Node must be installed.
 
 ## Example
 
+### Specific version
 <!-- start usage -->
 
 ```yaml
 - uses: stepzen-dev/stepzen-install@v1.0
   with: 
     version: 0.33.0
+```
+<!-- end usage -->
+
+### Latest version
+
+<!-- start usage -->
+
+```yaml
+- uses: stepzen-dev/stepzen-install@v1.0
 ```
 
 <!-- end usage -->
