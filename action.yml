@@ -1,0 +1,28 @@
+# Copyright IBM Corp. 2023
+# Made available under the MIT License
+
+name: "Install StepZen CLI"
+author: "IBM"
+description: |
+  Install the StepZen CLI. Assumes Node is already installed.
+
+inputs:
+  version:
+    description: "StepZen CLI Version (defaults to latest)"
+    required: true
+    default: latest
+
+runs:
+  using: "composite"
+  steps:
+    - id: install-stepzen-cli
+      # retry due to occasional npm failure
+      uses: nick-fields/retry@v2
+      with:
+        timeout_seconds: 30
+        max_attempts: 3
+        retry_wait_seconds: 2
+        shell: bash
+        command: npm install --location=global stepzen@${{ inputs.version }}
+    - run: stepzen version
+      shell: bash
