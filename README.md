@@ -2,6 +2,14 @@
 
 This action installs the specified `version` of the StepZen CLI (defaults to latest version).
 
+The `stepzen` CLI supports:
+ * IBM API Connect Essentials Software
+   * https://www.ibm.com/docs/en/api-connect/ace/1.x?topic=getting-started-api-connect-essentials
+ * IBM StepZen Graph Server (SaaS)
+   * https://www.ibm.com/docs/en/stepzen
+ * StepZen original SaaS
+   * https://www.stepzen.com
+
 # What's new
 
 First delivery of this action.
