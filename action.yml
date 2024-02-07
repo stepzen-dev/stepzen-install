@@ -17,7 +17,7 @@ runs:
   steps:
     - id: install-stepzen-cli
       # retry due to occasional npm failure
-      uses: nick-fields/retry@v2
+      uses: nick-fields/retry@v3
       with:
         timeout_seconds: 30
         max_attempts: 3
