@@ -19,10 +19,10 @@ runs:
       # retry due to occasional npm failure
       uses: nick-fields/retry@v3
       with:
-        timeout_seconds: 30
+        timeout_seconds: 120
         max_attempts: 3
         retry_wait_seconds: 2
         shell: bash
-        command: npm install --location=global stepzen@${{ inputs.version }}
+        command: npm install --location=global stepzen@${{ inputs.version }}  --verbose
     - run: stepzen version
       shell: bash
