@@ -15,14 +15,39 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Get npm cache directory
+      id: npm-cache-dir
+      shell: bash
+      run: echo "dir=$(npm config get cache)" >> $GITHUB_OUTPUT
+
+    - name: Get npm global directory
+      id: npm-global-dir
+      shell: bash
+      run: echo "dir=$(npm config get prefix)" >> $GITHUB_OUTPUT
+      
+    - name: Cache npm dependencies
+      uses: actions/cache@v3
+      id: npm-cache
+      with:
+        path: |
+          ${{ steps.npm-cache-dir.outputs.dir }}
+          ${{ steps.npm-global-dir.outputs.dir }}
+        key: ${{ runner.os }}-npm-${{ inputs.version }}-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-npm-${{ inputs.version }}-
+          ${{ runner.os }}-npm-
+
     - id: install-stepzen-cli
       # retry due to occasional npm failure
+      # Only run if cache miss
+      if: steps.npm-cache.outputs.cache-hit != 'true'
       uses: nick-fields/retry@v3
       with:
         timeout_seconds: 120
         max_attempts: 3
         retry_wait_seconds: 2
         shell: bash
-        command: npm install --location=global stepzen@${{ inputs.version }}  --verbose
+        command: npm install --location=global stepzen@${{ inputs.version }} --verbose
+        
     - run: stepzen version
       shell: bash
