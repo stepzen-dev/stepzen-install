@@ -16,7 +16,6 @@ runs:
   using: "composite"
   steps:
     - run: |
-      echo "SHA" ${{ github.sha }}
       echo "WS" ${HOME}
       mkdir -p ${HOME}/.stepzen-cli
       cd ${HOME}/.stepzen-cli
