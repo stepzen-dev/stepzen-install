@@ -17,9 +17,9 @@ runs:
   steps:
     - run: |
       echo "SHA" ${{ github.sha }}
-      echo "WS" ${{ github.github.workspace }}
-      mkdir -p ${{ github.github.workspace }}/.stepzen-cli
-      cd ${{ github.github.workspace }}/.stepzen-cli
+      echo "WS" ${{ github.workspace }}
+      mkdir -p ${{ github.workspace }}/.stepzen-cli
+      cd ${{ github.workspace }}/.stepzen-cli
     
     - id: install-stepzen-cli
       # retry due to occasional npm failure
@@ -33,4 +33,4 @@ runs:
     - run: stepzen version
       shell: bash
     - run: |
-      ls ${{ github.github.workspace }}/.stepzen-cli
+      ls ${{ github.workspace }}/.stepzen-cli
