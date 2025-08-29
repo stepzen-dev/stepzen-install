@@ -31,7 +31,7 @@ runs:
         retry_wait_seconds: 2
         shell: bash
         command: npm install stepzen@${{ inputs.version }}  --verbose
-    - run: stepzen version
+    - run: npm exec --package=stepzen -- stepzen version
       shell: bash
     - name: check
       shell: bash
