@@ -15,10 +15,12 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - run: |
-      echo "WS" ${HOME}
-      mkdir -p ${HOME}/.stepzen-cli
-      cd ${HOME}/.stepzen-cli
+    - name: setup
+      shell: bash
+      run: |
+        echo "WS" ${HOME}
+        mkdir -p ${HOME}/.stepzen-cli
+        cd ${HOME}/.stepzen-cli
     
     - id: install-stepzen-cli
       # retry due to occasional npm failure
@@ -31,5 +33,7 @@ runs:
         command: npm install stepzen@${{ inputs.version }}  --verbose
     - run: stepzen version
       shell: bash
-    - run: |
-      ls ${HOME}/.stepzen-cli
+    - name: check
+      shell: bash
+      run: |
+        ls ${HOME}/.stepzen-cli
