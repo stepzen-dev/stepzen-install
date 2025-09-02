@@ -15,6 +15,13 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: setup
+      shell: bash
+      run: |
+        echo "WS" ${HOME}
+        mkdir -p ${HOME}/.stepzen-cli
+        cd ${HOME}/.stepzen-cli
+    
     - id: install-stepzen-cli
       # retry due to occasional npm failure
       uses: nick-fields/retry@v3
@@ -23,6 +30,10 @@ runs:
         max_attempts: 3
         retry_wait_seconds: 2
         shell: bash
-        command: npm install --location=global stepzen@${{ inputs.version }}  --verbose
-    - run: stepzen version
+        command: npm install stepzen@${{ inputs.version }}  --verbose
+    - run: npm exec --package=stepzen -- stepzen version
       shell: bash
+    - name: check
+      shell: bash
+      run: |
+        ls ${HOME}/.stepzen-cli
