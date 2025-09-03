@@ -19,13 +19,11 @@ runs:
       id: get-version
       shell: bash
       run: |
-        if [[ "${VERSION}" == "latest" ]]; then
+        if [[ "${{ inputs.version }}" == "latest" ]]; then
           echo "cli_version=$(npm view stepzen version)" >> $GITHUB_OUTPUT
         else
           echo "cli_version=${VERSION}" >> $GITHUB_OUTPUT
-        fi
-      env:
-        VERSION: ${{ inputs.version }}
+        fi      
         
     - name: Cache stepzen cli
       id: cache-stepzen-cli
