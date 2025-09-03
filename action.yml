@@ -15,7 +15,26 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - id: install-stepzen-cli
+    - name: Get version
+      id: get-version
+      shell: bash
+      run: |
+        if [[ "${{ inputs.version }}" == "latest" ]]; then
+          echo "cli_version=$(npm view stepzen version)" >> $GITHUB_OUTPUT
+        else
+          echo "cli_version=${VERSION}" >> $GITHUB_OUTPUT
+        fi      
+        
+    - name: Cache stepzen cli
+      id: cache-stepzen-cli
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/stepzen-install
+        key: stepzen-cli-${{ steps.get-version.outputs.cli_version }}
+    
+    - name: create npm package for cache
+      if: steps.cache-stepzen-cli.outputs.cache-hit != 'true'
       # retry due to occasional npm failure
       uses: nick-fields/retry@v3
       with:
@@ -23,6 +42,14 @@ runs:
         max_attempts: 3
         retry_wait_seconds: 2
         shell: bash
-        command: npm install --location=global stepzen@${{ inputs.version }}  --verbose
+        command: |
+          mkdir -p ~/stepzen-install  
+          npm pack stepzen@${{ steps.get-version.outputs.cli_version }} --pack-destination ~/stepzen-install            
+    
+    - name: Install stepzen cli from cache
+      shell: bash
+      run: |
+        npm install --location=global ~/stepzen-install/stepzen-${{ steps.get-version.outputs.cli_version }}.tgz      
+
     - run: stepzen version
       shell: bash
